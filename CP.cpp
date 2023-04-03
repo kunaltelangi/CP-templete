@@ -38,38 +38,6 @@ typedef long int li;
 #define njfo(a,b) for(auto j=a;j>=b;--j)
 #define tt ll t; cin>>t; while(t--)
 
-template<typename T> using pbds = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
-
-template<typename T>
-ostream& operator<<(ostream& os, vector<T>& intermediate_array) { for (auto& a : intermediate_array) cout << a << ' '; return os; }
-template<typename T>
-istream& operator>>(istream& is, vector<T>& intermediate_array) { for (auto& a : intermediate_array) cin >> a; return is; }
-template<typename T>
-void print(T a) { cout << a << endl; }
-template<typename T, typename... Args>
-void print(T a, Args... b) { cout << a << " "; print(b...); } 
-template<typename T>
-void _debug(T a) {
-    if (typeid(a) == typeid(char)) cout << '\'';
-    if (typeid(a) == typeid(string)) cout << '\"';
-    cout << a;
-    if (typeid(a) == typeid(char)) cout << '\'';
-    if (typeid(a) == typeid(string)) cout << '\"';
-    cout << "]" << endl;
-}
-template<typename T, typename... Args>
-void _debug(T a, Args... b) {
-    if (typeid(a) == typeid(char)) cout << '\'';
-    if (typeid(a) == typeid(string)) cout << '\"';
-    cout << a;
-    if (typeid(a) == typeid(char)) cout << '\'';
-    if (typeid(a) == typeid(string)) cout << '\"';
-    cout << ",\t";
-    _debug(b...);
-}
-template<typename... Args>
-void debug(Args... b) { cout << '['; _debug(b...); }
-
 void swap(ll &x,ll &y){
 	ll temp = y;
 	y = x;
@@ -95,17 +63,111 @@ ll powa(ll a, ll b, ll m = mod){
 	}
 }
 
-string dectobin(ll n)
+//Binary search
+int binarySearch(int arr[], int l, int r, int x)
 {
-    string s = bitset<64> (n).to_string();
-    const auto loc1 = s.find('1');
-    if(loc1 != string::npos)
-        return s.substr(loc1);
-    return "0";
+    if (r >= l) {
+        int mid = l + (r - l) / 2;
+         if (arr[mid] == x)
+            return mid;
+ 
+
+        if (arr[mid] > x)
+            return binarySearch(arr, l, mid - 1, x);
+ 
+        return binarySearch(arr, mid + 1, r, x);
+    }
+ 
+    return -1;
+}
+int find(int n)
+{
+    int start = 0, end = 3e6;
+    while (end - start > 1)
+    {
+        int mid = (start + end) / 2;
+        if ((mid * mid * mid) > n)
+            end = mid;
+        else
+            start = mid;
+    }
+    return start;
+}
+
+//Merge sort
+void merge(int array[], int const left, int const mid,
+           int const right)
+{
+    auto const subArrayOne = mid - left + 1;
+    auto const subArrayTwo = right - mid;
+  
+
+    auto *leftArray = new int[subArrayOne],
+         *rightArray = new int[subArrayTwo];
+  
+    for (auto i = 0; i < subArrayOne; i++)
+        leftArray[i] = array[left + i];
+    for (auto j = 0; j < subArrayTwo; j++)
+        rightArray[j] = array[mid + 1 + j];
+  
+    auto indexOfSubArrayOne
+        = 0, 
+        indexOfSubArrayTwo
+        = 0; 
+    int indexOfMergedArray
+        = left; 
+    while (indexOfSubArrayOne < subArrayOne
+           && indexOfSubArrayTwo < subArrayTwo) {
+        if (leftArray[indexOfSubArrayOne]
+            <= rightArray[indexOfSubArrayTwo]) {
+            array[indexOfMergedArray]
+                = leftArray[indexOfSubArrayOne];
+            indexOfSubArrayOne++;
+        }
+        else {
+            array[indexOfMergedArray]
+                = rightArray[indexOfSubArrayTwo];
+            indexOfSubArrayTwo++;
+        }
+        indexOfMergedArray++;
+    }
+
+    while (indexOfSubArrayOne < subArrayOne) {
+        array[indexOfMergedArray]
+            = leftArray[indexOfSubArrayOne];
+        indexOfSubArrayOne++;
+        indexOfMergedArray++;
+    }
+  
+    while (indexOfSubArrayTwo < subArrayTwo) {
+        array[indexOfMergedArray]
+            = rightArray[indexOfSubArrayTwo];
+        indexOfSubArrayTwo++;
+        indexOfMergedArray++;
+    }
+    delete[] leftArray;
+    delete[] rightArray;
+}
+  
+void mergeSort(int array[], int const begin, int const end)
+{
+    if (begin >= end)
+        return; 
+  
+    auto mid = begin + (end - begin) / 2;
+    mergeSort(array, begin, mid);
+    mergeSort(array, mid + 1, end);
+    merge(array, begin, mid, end);
+}
+
+void solve(){
+    int qwerty = 25;
+    int arr[5] = {5,4,1,28,4};
+    mergeSort(arr,0,4);
+    binarySearch(arr,0,5,qwerty);
+    
 }
 
 int main(){
 	fastio
-    
-	
 }
